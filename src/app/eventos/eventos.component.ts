@@ -1,4 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { Evento } from './../_model/evento';
+import { EventoService } from './../_services/evento.service';
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,18 +10,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventosComponent implements OnInit {
 
-   eventos: any;
+   // tslint:disable-next-line: variable-name
+   _filtroLista: string;
+   get filtroLista(): string {
+      return this._filtroLista;
+   }
+   set filtroLista(value: string) {
+      this._filtroLista = value;
+      this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
 
-  constructor(private http: HttpClient) {}
+   }
+
+   eventosFiltrados: Evento[];
+   eventos: Evento[];
+   imagemLargura = 50;
+   imagemMargem = 2;
+   mostrarImagem = false;
+  constructor(private eventoService: EventoService) {}
 
   ngOnInit() {
      this.getEventos();
   }
 
+
+  alternarImagem() {
+    this.mostrarImagem = !this.mostrarImagem;
+}
+
+filtrarEventos(filtrarPor: string): Evento[] {
+ filtrarPor = filtrarPor.toLocaleLowerCase();
+ return this.eventos.filter(
+   evento => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+  );
+}
+
    getEventos() {
-      this.eventos = this.http.get('https://localhost:44343/api/values').subscribe(response => {
-         this.eventos = response;
-         console.log(response);
+      this.eventoService.getAllEvento().subscribe(
+         // tslint:disable-next-line: variable-name
+         (_eventos: Evento[]) => {
+         this.eventos = _eventos;
+         this.eventosFiltrados = this.eventos;
+         console.log(_eventos);
       }, error => {
          console.log(error);
       });
