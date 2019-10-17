@@ -1,13 +1,14 @@
+import { Constants } from './../util/Constants';
 import { Pipe, PipeTransform } from '@angular/core';
-import { Datepipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Pipe({
-  name: 'datetimFormatPipe'
+  name: 'DatetimeFormatPipe'
 })
-export class DatetimFormatPipePipe extends Datepipe implements PipeTransform {
+export class DatetimFormatPipePipe extends DatePipe implements PipeTransform {
 
   transform(value: any, ...args: any[]): any {
-    return super.transform(value, '');
+    return super.transform(value, Constants.DATE_TIME_FMT);
   }
 
 }

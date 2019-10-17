@@ -5,9 +5,9 @@ import { Palestrante } from './Palestrante';
 export interface Evento {
   id: number;
   local: string;
-  dataEvneto: Date;
+  dataEvento: Date;
   tema: string;
-  qtsPessoas: number;
+  qtdPessoas: number;
   imagemURL: string;
   telefone: string;
   email: string;
